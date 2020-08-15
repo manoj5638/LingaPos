@@ -18,30 +18,11 @@
       <div class="f-large" fxLayout="row" fxLayoutAlign="center center">
         LEFT PANEL
       </div>
-      <div class="mt-1-05" fxLayout="row wrap" fxLayoutAlign="center center" fxLayoutGap="10px">
-        <div fxLayout="row wrap">
-          <div fxFlex="45" class="controls">
-            Input Box
-          </div>
-          <div fxFlex="45" class="controls ml-05">
-            Select Box
-          </div>
-        </div>
-      </div>
-      <div class="mt-1" fxLayout="row wrap" fxLayoutAlign="center center" fxLayoutGap="10px">
-        <div fxLayout="row wrap">
-          <div fxFlex="45" class="controls">
-            Checkbox
-          </div>
-          <div fxFlex="45" class="controls ml-05">
-            Radio button
-          </div>
-        </div>
-      </div>
-      <div class="mt-1" fxLayout="row wrap" fxLayoutAlign="center center">
-        <div fxLayout="row wrap" fxLayoutAlign="center center">
-          <div fxFlex="100" class="controls">
-            Button
+      <div class="mt-1-05 p-10" fxLayout="row wrap" fxLayoutAlign="center center" dragula="formControls"
+        [(dragulaModel)]="controls" [attr.data-position]="'original'">
+        <div class="mb-1" fxFlex="100" *ngFor="let item of controls" [attr.data-controlType]="item.name">
+          <div class="controls">
+            {{item.value}}
           </div>
         </div>
       </div>
@@ -55,27 +36,33 @@
       <div class="mt-1-05" fxLayout="row wrap" fxLayoutAlign="center center" fxLayoutGap="10px" style="height: 80%;">
         <mat-card class="login-inner controls-height">
           <mat-card-content>
-            <form novalidate>
-              <div class="login-page">
-                <mat-form-field class="full-width search_goalinput">
-                  <input matInput name="username" placeholder="Username" value="" />
-                </mat-form-field>
+            <div fxLayout="row" fxLayoutAlign="center center">
+              <div class="drop-class" fxFlex="100" dragula="formControls" [(dragulaModel)]="controls1"
+                [attr.data-position]="'none'">
+                <span fxLayoutAlign="center center" class="custom-drag-items-text">
+                  Drop the components here
+                </span>
               </div>
-              <div class="mt-1 login-page">
-                <mat-form-field class="full-width search_goalinput">
-                  <input type="password" name="password" matInput placeholder="Password" value="" />
-                </mat-form-field>
-              </div>
-              <button mat-button mat-raised-button color="primary" class="full-width mb-1 mt-1">
-                Sign in
-              </button>
-              <div fxLayout="row" fxLayout.xs="column" fxLayoutAlign="space-between center"
-                fxLayoutAlign.xs="space-between center">
-                <div>
-                  <a mat-button class="forget-class">Forgot password</a>
+            </div>
+            <div fxLayout="row" fxLayoutAlign="center center">
+              <div fxLayout="row wrap" *ngFor="let item of components">
+                <div *ngIf="item.Name == 'input' && item.Type == 'text'">
+                  <mat-form-field class="">
+                    <input matInput [value]="item.Value" [disabled]=true>
+                  </mat-form-field>
+                </div>
+                <div *ngIf="item.Name == 'input' && item.Type == 'select'">
+                  <mat-form-field class="">
+                    <mat-select [(ngModel)]="inputFilter" placeholder="Select type">
+                      <mat-option value="text">text</mat-option>
+                      <mat-option value="password">password</mat-option>
+                      <mat-option value="email">email</mat-option>
+                      <mat-option value="number">number</mat-option>
+                    </mat-select>
+                  </mat-form-field>
                 </div>
               </div>
-            </form>
+            </div>
           </mat-card-content>
         </mat-card>
       </div>
@@ -86,7 +73,8 @@
       <div class="f-large" fxLayout="row" fxLayoutAlign="center center">
         JSON STRUCTURE
       </div>
-      <div class="mt-1-05" fxLayout="row wrap" fxLayoutAlign="center center" fxLayoutGap="10px">
+      <div *ngIf="components && components.length > 0" class="mt-1-05" fxLayout="row wrap" fxLayoutAlign="center center"
+        fxLayoutGap="10px">
         <pre>{{components | json}}</pre>
       </div>
     </mat-card>

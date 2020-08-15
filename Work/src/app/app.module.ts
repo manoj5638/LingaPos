@@ -5,16 +5,20 @@ import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { WorkflowComponent } from './workflow/workflow.component';
 
-import { MatCardModule, MatFormFieldModule, MatInputModule, MatSelectModule, MatRadioModule, MatCheckboxModule, MatButtonModule, MatDialogModule, MatToolbarModule, MatIconModule } from '@angular/material';
+import { MatCardModule, MatFormFieldModule, MatInputModule, MatSelectModule, MatRadioModule, MatCheckboxModule, MatButtonModule, MatDialogModule, MatToolbarModule, MatIconModule, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
 import { FlexLayoutModule } from "@angular/flex-layout";
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { DragulaModule } from "ng2-dragula";
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { TypeDialogComponent } from './type-dialog/type-dialog.component';
+import { ResultantWorkflowComponent } from './resultant-workflow/resultant-workflow.component';
 
 @NgModule({
   declarations: [
     AppComponent,
-    WorkflowComponent
+    WorkflowComponent,
+    TypeDialogComponent,
+    ResultantWorkflowComponent
   ],
   imports: [
     BrowserModule,
@@ -36,7 +40,11 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
     DragulaModule,
     DragulaModule.forRoot()
   ],
-  providers: [],
+  entryComponents: [TypeDialogComponent],
+  providers: [
+    { provide: MatDialogRef, useValue: {} },
+    { provide: MAT_DIALOG_DATA, useValue: {} }
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

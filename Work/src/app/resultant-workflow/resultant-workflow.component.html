@@ -2,10 +2,11 @@
   <mat-toolbar class="topbar remove-padding">
     <div fxLayout="row" class="full-width">
       <div fxFlex>
-        <img src="assets/images/linga-logo.png" alt="" id="mini-logo-topbar" style="width:50px; height:50px;" />
+        <img src="assets/images/linga-logo.png" alt="" id="mini-logo-topbar"
+          style="width:50px; height:50px; cursor: pointer;" (click)="goToMainPage()" />
       </div>
       <div fxFlex="100px" fxLayoutAlign="end center">
-        <button mat-button mat-raised-button color="primary" type="button">
+        <button mat-button mat-raised-button color="primary" type="button" (click)="downloadCode()">
           Download
         </button>
       </div>

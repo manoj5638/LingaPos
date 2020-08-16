@@ -3,6 +3,8 @@ import { DragulaService } from 'ng2-dragula';
 import { Subscription } from 'rxjs';
 import { MatDialog } from '@angular/material';
 import { TypeDialogComponent } from '../type-dialog/type-dialog.component';
+import { Router } from '@angular/router';
+import { WorkflowService } from '../services/workflow.service';
 
 @Component({
   selector: 'app-workflow',
@@ -11,6 +13,8 @@ import { TypeDialogComponent } from '../type-dialog/type-dialog.component';
 
 export class WorkflowComponent implements OnInit, OnDestroy {
   subs = new Subscription();
+
+  selectFilter: string;
 
   components = [];
 
@@ -39,7 +43,7 @@ export class WorkflowComponent implements OnInit, OnDestroy {
 
   controls1 = [];
 
-  constructor(private dragulaService: DragulaService, public dialog: MatDialog) {
+  constructor(private dragulaService: DragulaService, public dialog: MatDialog, private router: Router, private workFlowService: WorkflowService) {
     dragulaService.createGroup("formControls", {
       // accepts: this.acceptDragulaCallback,
       revertOnSpill: true,
@@ -54,27 +58,44 @@ export class WorkflowComponent implements OnInit, OnDestroy {
           let index = this.controls.findIndex(x => x.name == controlType);
           let data = this.controls[index];
           this.controls.splice(index, 1);
-          const dialogRef = this.dialog.open(TypeDialogComponent, {
-            height: '40%',
-            width: '20%',
-            hasBackdrop: true,
-            direction: 'ltr',
-            data: { controlType: controlType },
-            disableClose: true,
-            panelClass: 'custom-modal-container'
-          });
-          dialogRef.afterClosed().subscribe((response: any) => {
-            if (!response.success) {
-              this.controls.push(data);
-            }
-            else {
-              this.components.push({
-                Name: response.controlType,
-                Type: response.inputFilter,
-                Value: response.inputValueFilter
-              });
-            }
-          })
+          if (controlType != 'select') {
+            const dialogRef = this.dialog.open(TypeDialogComponent, {
+              maxHeight: '35%',
+              width: '20%',
+              hasBackdrop: true,
+              direction: 'ltr',
+              data: { controlType: controlType },
+              disableClose: true,
+              panelClass: 'custom-modal-container'
+            });
+            dialogRef.afterClosed().subscribe((response: any) => {
+              if (!response.success) {
+                this.controls.push(data);
+              }
+              else {
+                if (response.controlType != 'checkbox' && response.controlType != 'radio') {
+                  this.components.push({
+                    Name: response.controlType,
+                    Type: response.inputFilter,
+                    Value: response.inputValueFilter
+                  });
+                }
+                else {
+                  this.components.push({
+                    Name: response.controlType,
+                    Label: response.inputValueFilter,
+                    Value: ''
+                  });
+                }
+              }
+            })
+          }
+          else {
+            this.components.push({
+              Name: controlType,
+              Value: ''
+            });
+          }
         }
       })
     );
@@ -86,6 +107,19 @@ export class WorkflowComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
+  }
+
+  buttonClick(type) {
+    if (type == 'reset') {
+      this.components.forEach(x => {
+        x.Value = '';
+      });
+    }
+  }
+
+  goToPublish() {
+    this.workFlowService.components = this.components;
+    this.router.navigateByUrl('/publish');
   }
 
   public ngOnDestroy() {

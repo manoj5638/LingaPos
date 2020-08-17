@@ -22,7 +22,7 @@
 }
 
 .card-height {
-    height: 92vh;
+    height: 88vh;
 }
 
 .p-0 {
@@ -123,4 +123,28 @@
 
 .mat-input-element:disabled {
     color: black !important;
+}
+
+input.mat-input-element {
+    line-height: 0;
+}
+
+#style-1 {
+  overflow: auto; 
+    
+  &::-webkit-scrollbar-track {
+    border-radius: 10px;
+    background-color: #F5F5F5;
+  }
+
+  &::-webkit-scrollbar {
+    width: 6px;
+    height: 8px;
+    background-color: #F5F5F5;
+  }
+
+  &::-webkit-scrollbar-thumb {
+    border-radius: 10px;
+    background-color: #c1bfbf;
+  }
 }

@@ -15,6 +15,10 @@ export class TypeDialogComponent {
     this.controlType = this.data.controlType;
   }
 
+  changeValue() {
+    this.inputValueFilter = null;
+  }
+
   saveControl() {
     this.dialogRef.close({ success: true, controlType: this.controlType, inputFilter: this.inputFilter, inputValueFilter: this.inputValueFilter });
   }
